@@ -1,0 +1,40 @@
+@import '../../variables.css';
+
+.user-sider {
+    background: var(--color-background-primary);
+    position: 'relative';
+}
+
+.ant-menu-item:hover {
+  background-color: var(--color-background-primary) !important; /* Change background color on hover */
+}
+
+.ant-menu-item-selected {
+  background-color: var(--color-background-hover) !important; /* Change background color */
+}
+
+.toggle-button {
+    top: 50%;
+    border: 1px solid var(--color-border-primar);
+    width: 25px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    border-radius: 0 50% 50% 0;
+    cursor: pointer;
+    transform: translate(0, -50%);
+    box-shadow: 2px 0px 5px #03050a;
+    background: var(--color-background-primary);
+    z-index: 1;
+}
+
+.toggle-button:hover {
+    background: var(--color-background-hover) !important;
+}
+.toggle-button i::before {
+    transition: all 0.25s;
+}
+
+.ant-btn.ant-btn-icon-only {
+  width: 25px !important;
+}

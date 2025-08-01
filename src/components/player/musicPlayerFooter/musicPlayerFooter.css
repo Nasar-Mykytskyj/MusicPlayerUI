@@ -1,0 +1,12 @@
+.player-button .anticon {
+    color: azure !important;
+}
+
+.player-button:hover .anticon {
+    color: #ffffff !important;
+}
+
+.ant-slider-track {
+    background-image: linear-gradient(to right, rgba(124, 140, 194, 0.3) 0, #122677 60%)
+        /* Example: red to blue gradient */
+}
