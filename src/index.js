@@ -6,18 +6,20 @@ import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
 import reportWebVitals from './reportWebVitals';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import ReduxProvider from './store/ReduxProvider.tsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes >
-       
+    <ReduxProvider>
+      <BrowserRouter>
+        <Routes >
           <Route path={"/"} element={<App/>}></Route>
           <Route path={"/login"} element={<LoginPage/>}></Route>
           <Route path={"/home"} element={<Home/>}></Route>
-    </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </ReduxProvider>
   </React.StrictMode>
 );
 

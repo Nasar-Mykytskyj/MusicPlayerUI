@@ -7,46 +7,30 @@ import {
     StepForwardOutlined,
     DownloadOutlined,
 } from '@ant-design/icons';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks.ts';
+import { setCurrentIndex, setIsPlaying, fetchSongs } from '../../../store/playerSlice.ts';
 
 import './musicPlayerFooter.css'
 
 const { Text } = Typography;
 
-interface Song {
-    id: number;
-    name: string;
-    author: string;
-    image: string;
-    path: string;
-}
-
-const songs: Song[] = [
-    {
-        id: 1,
-        name: 'Thunder',
-        author: 'Imagine Dragons',
-        image:
-            'https://www.atelevisao.com/wp-content/uploads/2018/02/Imagine-Dragons-642x556.jpg',
-        path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-    },
-    {
-        id: 2,
-        name: 'Believer',
-        author: 'Imagine Dragons',
-        image:
-            'https://upload.wikimedia.org/wikipedia/en/f/f4/Imagine_Dragons_Believer.jpg',
-        path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-    },
-];
-
 const MusicPlayerFooter: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { songs, currentIndex, isPlaying } = useAppSelector(state => state.player);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = React.useRef<HTMLAudioElement>(null);
+    const [currentSong, setCurrentSong] = useState(songs[currentIndex] || { name: '', author: '', image: { url: '', width: 0, height: 0 }, path: '' });
 
-    const currentSong = songs[currentIndex];
+    //const currentSong = songs[currentIndex] || { name: '', author: '', image: '', path: '' };
+
+    useEffect(() => {
+        dispatch(fetchSongs());
+    }, [dispatch]);
+
+    useEffect(() => {
+        setCurrentSong(songs[currentIndex] || { name: '', author: '', image: { url: '', width: 0, height: 0 }, path: '' });
+    }, [currentIndex, songs]);
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -62,12 +46,13 @@ const MusicPlayerFooter: React.FC = () => {
 
         audio.addEventListener('timeupdate', handleTimeUpdate);
         audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.addEventListener('ended', handleEnded);
 
         return () => {
             audio.removeEventListener('timeupdate', handleTimeUpdate);
             audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
         };
-    }, [currentIndex]);
+    }, [currentIndex, songs]);
 
     const onSliderChange = (value: number) => {
         if (audioRef.current) {
@@ -83,38 +68,45 @@ const MusicPlayerFooter: React.FC = () => {
         } else {
             audioRef.current.play();
         }
-        setIsPlaying(!isPlaying);
+        dispatch(setIsPlaying(!isPlaying));
     };
 
     const nextSong = () => {
+        if (!songs.length) return;
         const nextIndex = (currentIndex + 1) % songs.length;
-        setCurrentIndex(nextIndex);
-        setIsPlaying(false);
+        dispatch(setCurrentIndex(nextIndex));
+        dispatch(setIsPlaying(false));
         setTimeout(() => {
             if (audioRef.current) {
                 audioRef.current.play();
-                setIsPlaying(true);
+                dispatch(setIsPlaying(true));
             }
         }, 100);
     };
 
     const prevSong = () => {
+        if (!songs.length) return;
         const prevIndex = (currentIndex - 1 + songs.length) % songs.length;
-        setCurrentIndex(prevIndex);
-        setIsPlaying(false);
+        dispatch(setCurrentIndex(prevIndex));
+        dispatch(setIsPlaying(false));
         setTimeout(() => {
             if (audioRef.current) {
                 audioRef.current.play();
-                setIsPlaying(true);
+                dispatch(setIsPlaying(true));
             }
         }, 100);
     };
 
     const downloadSong = () => {
+        if (!currentSong.path) return;
         const link = document.createElement('a');
         link.href = currentSong.path;
         link.download = `${currentSong.name}.mp3`;
         link.click();
+    };
+
+    const handleEnded = () => {
+        nextSong();
     };
 
     return (
@@ -127,7 +119,7 @@ const MusicPlayerFooter: React.FC = () => {
                     bottom: 0,
                     left: 0,
                     width: '100%',
-                    background: `url(${currentSong.image})`,
+                    background: '#1e1e1e',
                     padding: '12px 24px',
                     display: 'flex',
                     alignItems: 'center',
@@ -143,7 +135,7 @@ const MusicPlayerFooter: React.FC = () => {
                         style={{
                             width: 60,
                             height: 60,
-                            backgroundImage: `url(${currentSong.image})`,
+                            backgroundImage: `url(${currentSong.image.url})`,
                             backgroundSize: 'cover',
                             borderRadius: '50%',
                             marginRight: 16,
@@ -165,7 +157,7 @@ const MusicPlayerFooter: React.FC = () => {
                     onChange={onSliderChange}
                     tooltipVisible={false}
                     step={1}
-                    style={{ flex: 1, margin: '0 24px'}}
+                    style={{ flex: 1, margin: '0 24px' }}
                 />
 
                 {/* Controls */}

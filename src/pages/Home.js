@@ -2,6 +2,7 @@ import React from 'react';
 import { Flex, Layout } from 'antd';
 import UserSidebar from '../components/userSideBar/UserSideBar.tsx';
 import MusicPlayerFooter from '../components/player/musicPlayerFooter/MusicPlayerFooter.tsx'
+import HomeContent from '../components/home/Home.tsx';
 
 const { Content } = Layout;
 
@@ -11,9 +12,7 @@ const Home = () => {
             <Flex style={{width:'100%', height: '90vh'}}>
                 <UserSidebar />
                 <Layout>
-                    <Content style={{ margin: 24, background: '#fff', padding: 24, width: `80%`, }}>
-                        <p>Welcome to Home</p>
-                    </Content>
+                        <HomeContent />
                 </Layout>
             </Flex>
             <div className='music-footer-wrapper' style={{height: '10vh'}}>
