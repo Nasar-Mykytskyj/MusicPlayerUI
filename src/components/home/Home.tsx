@@ -1,54 +1,43 @@
 import React from 'react';
 import './Home.css';
-
-const mockPlaylists = [
-	{
-		id: 1,
-		name: 'Top Hits 2025',
-		description: 'The hottest tracks of the year',
-		image: 'https://i.scdn.co/image/ab67706f00000002b1e8e7e2e2e2e2e2e2e2e2e2',
-	},
-	{
-		id: 2,
-		name: 'Chill Vibes',
-		description: 'Relax and unwind with these chill tunes',
-		image: 'https://i.scdn.co/image/ab67706f00000002c2e8e7e2e2e2e2e2e2e2e2e2',
-	},
-	{
-		id: 3,
-		name: 'Workout Mix',
-		description: 'Get pumped with this energetic playlist',
-		image: 'https://i.scdn.co/image/ab67706f00000002d3e8e7e2e2e2e2e2e2e2e2e2',
-	},
-	{
-		id: 4,
-		name: 'Focus Flow',
-		description: 'Stay productive with these tracks',
-		image: 'https://i.scdn.co/image/ab67706f00000002e4e8e7e2e2e2e2e2e2e2e2e2',
-	},
-];
+import {Divider} from "antd";
+import {HorizontalCardScroll, } from '../custom/scroll/horizontalScroll/HorizontalCardScroll.tsx';
+import { MusicCardProps } from "../custom/musicCard/MusicCard";
+import { getRecommendedPlaylists } from '../../api/recommendationApi.ts';
 
 const HomeContent: React.FC = () => {
+	const fetchPlaylists = async (page: number, pageSize: number) => {
+		var items: MusicCardProps[] = [];
+
+		try {
+			const playlists = await getRecommendedPlaylists(page, pageSize);
+			for (let i = 0; i < playlists.length; i++) {
+				items.push({
+					id: playlists[i].id,
+					title: playlists[i].name,
+					description: playlists[i].description,
+					image: playlists[i].image.url,
+				});
+			}
+		} catch (error) {
+			console.error('Error fetching playlists:', error);
+		}
+		return items;
+	}
+	
 	return (
 		<div className="spotify-home-container">
 			<header className="spotify-hero">
-				<h1>Welcome back!</h1>
 				<p>Enjoy your favorite music, playlists, and more.</p>
 			</header>
-			<section className="spotify-section">
-				<h2>Featured Playlists</h2>
-				<div className="spotify-playlists-grid">
-					{mockPlaylists.map((playlist) => (
-						<div className="spotify-playlist-card" key={playlist.id}>
-							<img src={playlist.image} alt={playlist.name} />
-							<div className="playlist-info">
-								<h3>{playlist.name}</h3>
-								<p>{playlist.description}</p>
-							</div>
-						</div>
-					))}
-				</div>
-			</section>
+			<Divider className="home-scroll-divider" orientation="start" orientationMargin="0">Daily Mix</Divider>
+			<div>
+				<HorizontalCardScroll fetchItems={fetchPlaylists} />
+			</div>
+			{/* <Divider style={{ borderColor: '#7cb305' }}>Solid</Divider>
+			<p>
+				<HorizontalCardScroll fetchItems={fetchPlaylists} />
+			</p> */}
 		</div>
 	);
 };

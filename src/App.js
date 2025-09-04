@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { ConfigProvider } from 'antd';
 
-const App = () => {
+function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
-      </header>
-    </div>
+    <ConfigProvider
+      theme={{
+        token: {
+          fontFamily: 'Arial, sans-serif',
+          borderRadius: 8, // Set your desired global border-radius in pixels
+          hoverBgColor: 'rgba(255, 255, 255, 0.1)', // Example hover background color
+          activeBgColor: 'rgba(255, 255, 255, 0.2)', // Example active background color
+        },
+        components: {
+          Splitter: {
+            splitBarSize: 10,
+            splitBarDraggableSize: 20,
+          },
+        },
+      }}
+      componentSize="large" // default size for all components
+    >
+      {/* ...your app components... */}
+    </ConfigProvider>
   );
 }
 

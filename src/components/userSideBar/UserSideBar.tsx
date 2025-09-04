@@ -1,65 +1,37 @@
-import React, { useState,useEffect } from 'react';
-import { Layout, Menu, Avatar, Typography, Button, Flex } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Menu, Avatar, Typography, Button, Flex } from 'antd';
 import { RightOutlined, LeftOutlined, SettingOutlined, HeartFilled, OrderedListOutlined } from '@ant-design/icons';
 import {
     FacebookFilled,
     TwitterOutlined,
     InstagramOutlined,
-    MenuOutlined,
 } from '@ant-design/icons';
+import SplitterLayout from 'react-splitter-layout';
+import 'react-splitter-layout/lib/index.css';
+import './userSideBar.css';
+import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
+import { fetchUser } from '../../store/userSlice.ts';
 
-import './userSideBar.css'
-
-const { Sider } = Layout;
 const { Text } = Typography;
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  images: string[];
+interface UserSidebarProps {
+    collapsed?: boolean;
 }
 
-const UserSidebar = () => {
+const UserSidebar: React.FC<UserSidebarProps> = () => {
+    const dispatch = useAppDispatch();
+    const { user, loading } = useAppSelector(state => state.user);
     const [collapsed, setCollapsed] = useState(false);
-    const [user, setUser] = useState<User | null>(null);
 
-   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("/spotify/user/info");
-        if (!res.ok) {
-          throw new Error("Failed to fetch users");
-        }
-        const data = await res.json();
-        setUser(data);
-      } catch (err: any) {
-        console.log(err);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
-    const handleClick = () => {
-        setCollapsed(!collapsed)
-    };
+    useEffect(() => {
+        dispatch(fetchUser());
+    }, [dispatch]);
 
     return (
-        <Flex vertical={false}>
-            <Sider
-                collapsible
-                collapsed={collapsed}
-                width={280}
-                theme="dark"
-                trigger={null}
-                className='user-sider'
-                style={{
-                    paddingTop: 20,
-                    position: 'relative',
-                }}
-            >
-                {/* User Info */}
+        <Flex style={{ width: '100%', height: '100%', overflow: 'hidden' }}
+            className="user-sidebar"
+        >
+            <div className={`user-sidebar-content${collapsed ? ' collapsed' : ''}`}> 
                 <div style={{ textAlign: 'center', padding: 16 }}>
                     <div
                         style={{
@@ -91,9 +63,8 @@ const UserSidebar = () => {
                         </>
                     )}
                 </div>
-
-                {/* Menu */}
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} 
+                    style={{height: 'calc(100% - 200px)', borderRight: 0, background: 'transparent' }}>
                     <Menu.Item key="1" icon={<OrderedListOutlined />} className=''>
                         My Playlists
                     </Menu.Item>
@@ -104,12 +75,8 @@ const UserSidebar = () => {
                         Settings
                     </Menu.Item>
                 </Menu>
-
-                {/* Social Links */}
                 <div
                     style={{
-                        position: 'absolute',
-                        bottom: 16,
                         width: '100%',
                         textAlign: 'center',
                     }}
@@ -124,8 +91,8 @@ const UserSidebar = () => {
                         <InstagramOutlined />
                     </a>
                 </div>
-            </Sider>
-            <Button type="primary" className='toggle-button' icon={collapsed ? <RightOutlined /> : <LeftOutlined />} onClick={handleClick} />
+            </div>
+
         </Flex>
     );
 };

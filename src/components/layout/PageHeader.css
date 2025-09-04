@@ -1,0 +1,59 @@
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 10px 10px;
+  border-bottom: 1px solid #181c2b;
+  background-color: var(--color-background-primary);
+
+  min-height: 40px;
+  max-height: 40px;
+}
+
+.ant-page-header {
+  background: transparent !important;
+}
+
+.page-header-title {
+  color: #fff;
+  margin: 0;
+}
+
+.page-header-search {
+  width: 320px;
+  background: #181c2b;
+  border-radius: 6px;
+  border-color: transparent;
+  color: #fff;
+}
+
+.ant-input-search-input {
+  background-color: #181c2b !important;
+  /* Example color */
+}
+
+.ant-input-clear-icon {
+  color: rgba(255,255,255,0.55) !important;
+  font-size: 20px;
+}
+
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper:focus-within {
+  background: #181c2b !important;
+  border-color: transparent;
+  /* your desired border color */
+}
+
+/* Optional: to also remove border highlight */
+.ant-input-outlinedd:hover,
+.ant-input-affix-wrapper:hover {
+  border-color: transparent;
+  /* your desired border color */
+  background: #181c2b !important;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.page-header-search input {
+  background: #181c2b;
+  color: #181c2b;
+}

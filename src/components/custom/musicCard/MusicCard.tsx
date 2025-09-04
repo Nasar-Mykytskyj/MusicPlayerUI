@@ -1,52 +1,59 @@
-import React, { useState, useEffect } from "react";
-import { PlayCircleOutlined } from '@ant-design/icons';
-import { Card, Spin } from "antd";
+import React, { useState } from "react";
+import { Card } from "antd";
+import { PlayCircleOutlined, FolderOpenOutlined } from '@ant-design/icons';
 
+import "./MusicCard.css";
 const { Meta } = Card;
 
-interface CardProps {
-    id ?: number;
+export interface MusicCardProps {
+    id?: string;
     title: string;
     description?: string;
     image: string;
-    onClick ?: () => void;
+    onPlay?: () => void;
+    onOpen?: () => void;
+    type?: 'song' | 'album' | 'playlist'; // Optional for styling/logic
 }
 
-const MusicCard: React.FC<CardProps> = (props: CardProps) => {
+export const MusicCard: React.FC<MusicCardProps> = (props) => {
     const [hovered, setHovered] = useState(false);
 
     return (
         <Card
             key={props.id}
             hoverable
-            style={{ width: 200, position: 'relative' }}
+            bordered={false}
+            className="custom-card"
+            bodyStyle={{ padding: "4px 8px" }} 
+            style={{ width: 150, position: 'relative', borderRadius: "10px" }}
             cover={
                 <div style={{ position: 'relative' }}>
-                    <img alt={props.title} src={props.image} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                    <img alt={props.title} src={props.image}  style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: "10px" }} />
                     {hovered && (
-                        <PlayCircleOutlined
-                            style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                fontSize: 48,
-                                color: '#fff',
-                                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
-                                cursor: 'pointer',
-                                zIndex: 2,
-                            }}
-                            onClick={props.onClick}
-                        />
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            display: 'flex',
+                            gap: 16,
+                            zIndex: 2,
+                        }}>
+                            {props.onPlay && (
+                                <PlayCircleOutlined
+                                    style={{ fontSize: 40, color: '#fff', cursor: 'pointer', textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
+                                    onClick={e => { e.stopPropagation(); props.onPlay && props.onPlay(); }}
+                                />
+                            )}
+                        </div>
                     )}
                 </div>
             }
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            onClick={props.onOpen}
         >
-            <Meta title={props.title} description={props.description} />
+            <Meta title={props.title} description={props.description}  style={{ padding: 5, color: '#fff' }} />
         </Card>
     );
 };
-
-export default MusicCard;

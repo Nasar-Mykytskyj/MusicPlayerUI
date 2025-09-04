@@ -1,0 +1,17 @@
+
+.custom-card {
+    backdrop-filter: blur(2px);
+    background: rgba(255, 255, 255, 0.1); /* semi-transparent */
+}
+
+.custom-card .ant-card-meta-title {
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.custom-card .ant-card-meta-description {
+  color: #b3b3b3; /* Light gray for description */
+  font-size: 0.5rem; /* Slightly smaller font size */
+  margin-bottom: 4px;
+  margin-top: 4px; /* Space between title and description */
+}

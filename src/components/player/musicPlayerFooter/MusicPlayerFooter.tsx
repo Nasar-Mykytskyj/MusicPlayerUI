@@ -115,10 +115,6 @@ const MusicPlayerFooter: React.FC = () => {
 
             <div
                 style={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
                     background: '#1e1e1e',
                     padding: '12px 24px',
                     display: 'flex',

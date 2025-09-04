@@ -1,8 +1,7 @@
 @import '../../variables.css';
 
-.user-sider {
-    background: var(--color-background-primary);
-    position: 'relative';
+.user-sidebar {
+  background: linear-gradient(135deg, #181c2b 0%, #232946 100%);
 }
 
 .ant-menu-item:hover {
@@ -11,6 +10,11 @@
 
 .ant-menu-item-selected {
   background-color: var(--color-background-hover) !important; /* Change background color */
+}
+
+.user-sidebar-content {
+  width: 100%;
+  height: 100%;
 }
 
 .toggle-button {
