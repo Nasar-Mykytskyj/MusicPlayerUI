@@ -3,7 +3,7 @@ import './Home.css';
 import {Divider} from "antd";
 import {HorizontalCardScroll, } from '../custom/scroll/horizontalScroll/HorizontalCardScroll.tsx';
 import { MusicCardProps } from "../custom/musicCard/MusicCard";
-import { getRecommendedPlaylists, getRecommendedAuthors } from '../../api/recommendationApi.ts';
+import { getRecommendedPlaylists, getRecommendedAuthors,getRecommendedAlbums } from '../../api/recommendationApi.ts';
 
 const HomeContent: React.FC = () => {
 	const fetchPlaylists = async (page: number, pageSize: number) => {
@@ -47,7 +47,27 @@ const HomeContent: React.FC = () => {
 
 		return items;
 	}
-	
+
+	const fetchAlbums = async (page: number, pageSize: number): Promise<MusicCardProps[]> => {
+		var items: MusicCardProps[] = [];
+		// Implement album fetching logic here, similar to fetchPlaylists and fetchAuthors
+		try {
+			const albums = await getRecommendedAlbums(page, pageSize);
+			for (let i = 0; i < albums.length; i++) {
+				items.push({
+					id: albums[i].id,
+					title: albums[i].name,
+					description: albums[i].description,
+					image: albums[i].image.url,
+					type: 'album',
+				});
+			}
+		} catch (error) {
+			console.error('Error fetching albums:', error);
+		}
+		return items;
+	}
+
 	return (
 		<div className="spotify-home-container">
 			<header className="spotify-hero">
@@ -61,9 +81,9 @@ const HomeContent: React.FC = () => {
 			<div>
 				<HorizontalCardScroll fetchItems={fetchAuthors} />
 			</div>
-			<Divider className="home-scroll-divider" orientation="start" orientationMargin="0">Authors for you</Divider>
+			<Divider className="home-scroll-divider" orientation="start" orientationMargin="0">Albums for you</Divider>
 			<div>
-				<HorizontalCardScroll fetchItems={fetchAuthors} />
+				<HorizontalCardScroll fetchItems={fetchAlbums} />
 			</div>
 		</div>
 	);
