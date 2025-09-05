@@ -44,6 +44,8 @@ const MusicPlayerFooter: React.FC = () => {
             setDuration(audio.duration);
         };
 
+        // Remove play/pause logic from here; handled in a separate useEffect below.
+
         audio.addEventListener('timeupdate', handleTimeUpdate);
         audio.addEventListener('loadedmetadata', handleLoadedMetadata);
         audio.addEventListener('ended', handleEnded);
@@ -53,6 +55,20 @@ const MusicPlayerFooter: React.FC = () => {
             audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
         };
     }, [currentIndex, songs]);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio || !audio.src) return;
+        if (isPlaying) {
+            // Only attempt to play if the audio is loaded and user has interacted
+            audio.play().catch((e) => {
+                // Handle play() promise rejection due to autoplay policy
+                console.warn('Audio play failed:', e);
+            });
+        } else {
+            audio.pause();
+        }
+    }, [isPlaying, currentSong.path]);
 
     const onSliderChange = (value: number) => {
         if (audioRef.current) {

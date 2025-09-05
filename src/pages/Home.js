@@ -37,19 +37,28 @@ const Home = () => {
                     <PageHeader />
                 </Col>
             </Row>
-            <Row justify="start" style={{ flex: 1, overflow: 'hidden', padding: '16px' }} gutter={[16, 24]}>
-                <Col span={24}>
-                    <Splitter style={{ gap: 5 }} onResize={setSizes}>
+            <Row
+                justify="start"
+                style={{
+                    flex: 1,
+                    overflow: 'hidden',
+                    padding: '16px',
+                    height: '0', // Ensures flex: 1 works for vertical fill
+                }}
+                gutter={[16, 24]}
+            >
+                <Col span={24} style={{ height: '100%' }}>
+                    <Splitter style={{ gap: 5, height: "100%" }} onResize={setSizes}>
                         <Splitter.Panel defaultSize="20%" min="5%" max="40%">
                             <UserSidebar collapsed={userSideBarCollapsed} />
                         </Splitter.Panel>
-                        <Splitter.Panel>
+                        <Splitter.Panel style={{ overflowY: "auto", height: "100%" }}>
                             <HomeContent style={{ width: '100%' }} />
                         </Splitter.Panel>
                     </Splitter>
                 </Col>
             </Row>
-            <Row >
+            <Row>
                 <Col span={24}>
                     <MusicPlayerFooter />
                 </Col>

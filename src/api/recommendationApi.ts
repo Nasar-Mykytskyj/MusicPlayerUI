@@ -1,4 +1,4 @@
-import { Playlist } from '../types/music';
+import { Playlist, Author } from '../types/music';
 
 export const getRecommendedPlaylists = async (offset: number, limit: number): Promise<Playlist[]> => {
   const res = await fetch(`/spotify/user/playlists/recommended?offset=${offset}&limit=${limit}`);
@@ -15,5 +15,22 @@ export const getRecommendedPlaylists = async (offset: number, limit: number): Pr
       width: p.images && p.images.length > 0 ? p.images[0].width : undefined,
     },
     totalTracks: p.tracks?.Total ?? 0,
+  }));
+};
+
+export const getRecommendedAuthors = async (offset: number, limit: number): Promise<Author[]> => {
+  const res = await fetch(`/spotify/user/authors/recommended?offset=${offset}&limit=${limit}`);
+  if (!res.ok) throw new Error('Failed to fetch recommended authors');
+  const data = await res.json();
+  // Transform the response
+  return data.authors.map((a: any) => ({
+    id: a.id,
+    name: a.name,
+    description: a.description,
+    image: {
+      url: a.images && a.images.length > 0 ? a.images[0].url : '',
+      height: a.images && a.images.length > 0 ? a.images[0].height : undefined,
+      width: a.images && a.images.length > 0 ? a.images[0].width : undefined,
+    },
   }));
 };

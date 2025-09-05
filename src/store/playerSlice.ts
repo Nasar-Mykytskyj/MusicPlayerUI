@@ -1,17 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { Song } from '../types/music';
 
 export interface Image {
   url: string;
   width: number;
   height: number;
-}
-
-export interface Song {
-  id: number;
-  name: string;
-  author: string;
-  image: Image;
-  path: string;
 }
 
 interface PlayerState {

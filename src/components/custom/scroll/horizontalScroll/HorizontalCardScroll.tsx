@@ -65,9 +65,11 @@ export const HorizontalCardScroll: React.FC<HorizontalCardScrollProps> = ({ fetc
             {items.map((item) => (
               <MusicCard
                 key={item.id}
+                id={item.id}
                 title={item.title}
                 description={item.description}
                 image={item.image}
+                type={item.type}
                 onPlay={item.onPlay}
                 onOpen={item.onOpen}
               />

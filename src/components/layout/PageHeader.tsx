@@ -5,7 +5,7 @@ import './PageHeader.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { fetchUser } from '../../store/userSlice.ts';
 import { ProPageHeader } from '@ant-design/pro-layout';
-import { searchAll, setQuery } from '../../store/searchSlice';
+import { searchAll, setQuery } from '../../store/searchSlice.ts';
 
 import { useNavigate } from 'react-router-dom';
 

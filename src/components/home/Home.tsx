@@ -3,7 +3,7 @@ import './Home.css';
 import {Divider} from "antd";
 import {HorizontalCardScroll, } from '../custom/scroll/horizontalScroll/HorizontalCardScroll.tsx';
 import { MusicCardProps } from "../custom/musicCard/MusicCard";
-import { getRecommendedPlaylists } from '../../api/recommendationApi.ts';
+import { getRecommendedPlaylists, getRecommendedAuthors } from '../../api/recommendationApi.ts';
 
 const HomeContent: React.FC = () => {
 	const fetchPlaylists = async (page: number, pageSize: number) => {
@@ -17,11 +17,34 @@ const HomeContent: React.FC = () => {
 					title: playlists[i].name,
 					description: playlists[i].description,
 					image: playlists[i].image.url,
+					type: 'playlist',
 				});
 			}
 		} catch (error) {
 			console.error('Error fetching playlists:', error);
 		}
+		return items;
+	}
+
+	const fetchAuthors = async (page: number, pageSize: number) => {
+		var items: MusicCardProps[] = [];
+
+		try {
+			const authors = await getRecommendedAuthors(page, pageSize);
+			for (let i = 0; i < authors.length; i++) {
+				items.push({
+					id: authors[i].id,
+					title: authors[i].name,
+					description: authors[i].description,
+					image: authors[i].image.url,
+					type: 'author',
+				});
+			}
+			
+		} catch (error) {
+			console.error('Error fetching authors:', error);
+		}
+
 		return items;
 	}
 	
@@ -34,10 +57,14 @@ const HomeContent: React.FC = () => {
 			<div>
 				<HorizontalCardScroll fetchItems={fetchPlaylists} />
 			</div>
-			{/* <Divider style={{ borderColor: '#7cb305' }}>Solid</Divider>
-			<p>
-				<HorizontalCardScroll fetchItems={fetchPlaylists} />
-			</p> */}
+			<Divider className="home-scroll-divider" orientation="start" orientationMargin="0">Authors for you</Divider>
+			<div>
+				<HorizontalCardScroll fetchItems={fetchAuthors} />
+			</div>
+			<Divider className="home-scroll-divider" orientation="start" orientationMargin="0">Authors for you</Divider>
+			<div>
+				<HorizontalCardScroll fetchItems={fetchAuthors} />
+			</div>
 		</div>
 	);
 };
