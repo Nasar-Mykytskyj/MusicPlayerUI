@@ -1,0 +1,33 @@
+.my-playlists-page {
+  padding: 32px;
+  background: #181c2b;
+  min-height: 100vh;
+}
+
+.my-playlists-page h2 {
+  color: #fff;
+  margin-bottom: 32px;
+}
+
+.playlists-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.playlist-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: #232946;
+  border-radius: 12px;
+  padding: 16px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+
+.playlists-loading {
+  color: #fff;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 40px;
+}

@@ -5,7 +5,7 @@ import { getAuthorTopSongs } from '../../../api/authorApi.ts';
 import { getAlbumSongs, getPlaylistSongs } from '../../../api/musicApi.ts';
 import { useAppDispatch } from '../../../store/hooks.ts';
 import { setSongs, setCurrentIndex, setIsPlaying } from '../../../store/playerSlice.ts';
-
+import {Empty } from 'antd';
 import "./MusicCard.css";
 const { Meta } = Card;
 
@@ -51,7 +51,11 @@ export const MusicCard: React.FC<MusicCardProps> = (props) => {
             style={{ width: 150, position: 'relative', borderRadius: "10px" }}
             cover={
                 <div style={{ position: 'relative' }}>
-                    <img alt={props.title} src={props.image}  style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: "10px" }} />
+                    {props.image ? (
+                          <img alt={props.title} src={props.image}  style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: "10px" }} />
+                    ) : (
+                         <Empty description="" image="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1" />
+                    )}
                     {hovered && (
                         <div style={{
                             position: 'absolute',
